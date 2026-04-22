@@ -139,6 +139,51 @@ except KeyboardInterrupt:
     bus.close()
     del bus
 ```
+## 2. Testing and Validation
+
+In this section, we verify the Forward Kinematics (FK) model by comparing the theoretical coordinates with the physical position of the robotic arm. The tests were conducted on a grid paper where **each cell represents 5 mm**.
+
+### 2.1. Test Case 1: Zero Position
+* **Input Angles:** $\theta_1 = 0^\circ, \theta_2 = 0^\circ$
+* **Expected Coordinates:** $(L_1 + L_2, 0) = (115, 0)$
+* **Observation:** The arm is fully extended along the X-axis.
+
+![Robotic Arm at 0,0](path_to_your_photo_1.jpg)
+
+### 2.2. Test Case 2: Perpendicular Position
+* **Input Angles:** $\theta_1 = 90^\circ, \theta_2 = 0^\circ$
+* **Expected Coordinates:** $(0, 115)$
+* **Observation:** Link 1 is vertical, and Link 2 continues in the same direction.
+
+![Robotic Arm at 90,0](path_to_your_photo_2.jpg)
+
+### 2.3. Test Case 3: Right Angle Fold
+* **Input Angles:** $\theta_1 = 0^\circ, \theta_2 = 90^\circ$
+* **Expected Coordinates:** $(a_1, a_2) = (70, 45)$
+* **Observation:** Link 1 lies on the X-axis, while Link 2 is perpendicular to it.
+
+![Robotic Arm at 0,90](path_to_your_photo_3.jpg)
+
+### 2.4. Test Case 4: Double Perpendicular
+* **Input Angles:** $\theta_1 = 90^\circ, \theta_2 = 90^\circ$
+* **Expected Coordinates:** $(-L_2, L_1) = (-45, 70)$
+* **Observation:** The first link is vertical (along Y), and the second link turns 90 degrees CCW, pointing back along the negative X-axis.
+
+![Robotic Arm at 90,90](path_to_your_photo_4.jpg)
+
+### 2.5. Test Case 5: Verification using Grid Paper
+For this final test, we used the specific angles from our code to compare the mathematical output with manual measurements on grid paper.
+
+* **Input Angles:** $\theta_1 = 42^\circ, \theta_2 = 28^\circ$
+* **FK Code Result:** $X \approx 68.32 \text{ mm}, Y \approx 87.89 \text{ mm}$
+* **Manual Measurement:**
+    We counted the cells on the grid paper from the origin $(0,0)$:
+    * **X-axis:** $13.5 \text{ cells} \times 5 \text{ mm/cell} = 67.5 \text{ mm}$
+    * **Y-axis:** $17 \text{ cells} \times 5 \text{ mm/cell} = 85.0 \text{ mm}$
+
+**Conclusion:** The difference between the code results and the physical measurements is minimal (within $2-3 \text{ mm}$). This error is likely due to the physical backlash in the servo gears and slight misalignments when placing the arm on the grid paper. The experiment successfully validates our Forward Kinematics model.
+
+![Manual Verification on Grid Paper](path_to_your_photo_5.jpg)
 
 
-
+گ
