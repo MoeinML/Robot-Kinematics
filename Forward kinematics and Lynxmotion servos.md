@@ -203,4 +203,36 @@ The shape of the workspace for this robotic arm is a **Circular Sector** (or a p
 * **Physical Limits:** The shape is not a full circle because the servomotors and the mechanical structure have rotation limits (e.g., cables or physical stops), which restrict the angular range. 
 * **Application:** This "fan-like" workspace is typical for SCARA manipulators, making them highly efficient for pick-and-place tasks or drawing on a flat surface within this specific curved boundary.
 
+## 4. Final Analysis and Questions
+
+### A. What kind of movement does your robot implement: joint or linear?
+Our robot implements **Joint Movement** (also known as PTP - Point to Point). 
+* **Reason:** In this system, we control the angular displacement of each motor (revolute joints) independently. When moving from one coordinate to another, the end-effector travels in an arc-like path rather than a straight line, as the motors reach their target angles simultaneously.
+
+### B. What is the maximum reach of your robotic arm?
+The maximum reach is the total length of the kinematic chain when the arm is fully extended ($\theta_1 = 0^\circ, \theta_2 = 0^\circ$).
+* **Calculation:** $Reach_{max} = a_1 + a_2$
+* **Result:** $70\text{ mm} + 45\text{ mm} = \mathbf{115\text{ mm}}$
+
+### C. What is missing regarding software and hardware for making it a product?
+To transform this prototype into a commercial product, several enhancements are needed:
+* **Hardware:**
+    * **Enclosure:** A professional housing to protect the electronics (RPi and wiring).
+    * **Power Management:** An integrated battery system or a more compact power supply.
+    * **End-Effector:** A specialized tool (like a gripper or a vacuum suction cup) instead of a simple pen holder.
+    * **Rigidity:** Using more durable materials (like aluminum or carbon fiber) to reduce mechanical backlash.
+* **Software:**
+    * **Inverse Kinematics (IK):** Allowing the user to input $(X, Y)$ coordinates directly instead of angles.
+    * **User Interface (GUI):** A mobile or desktop app for easy control without writing code.
+    * **Safety Features:** Collision detection and emergency stop (E-Stop) protocols.
+
+### D. What is the approximate cost of this robotic arm?
+The estimated cost for this prototype is approximately **€160 - €210**, based on current market prices in Finland/EU:
+* **Lynxmotion Smart Servos (2x):** ~€90 - €110
+* **Raspberry Pi Zero 2W:** ~€20 - €25
+* **Grove Base HAT & Cables:** ~€15
+* **LSS Adapter & 12V Power Supply:** ~€30 - €40
+* **Mechanical Structure & 3D Printed Parts:** ~€5 - €20
+
+---
 گ
