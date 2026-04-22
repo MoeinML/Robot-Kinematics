@@ -15,11 +15,6 @@ The following Python script calculates the position of the robot's end-effector 
 import numpy as np
 
 def create_htmatrix(angle, dx, dy):
-    """
-    Creates a 3x3 Homogeneous Transformation Matrix for 2D space.
-    - angle: Rotation in degrees
-    - dx, dy: Translation offsets
-    """
     theta_rad = np.radians(angle)
     c = np.cos(theta_rad)
     s = np.sin(theta_rad)
@@ -30,29 +25,28 @@ def create_htmatrix(angle, dx, dy):
         [0,  0, 1 ]
     ])
 
-# Link lengths (units from robot specifications)
 a1 = 70
 a2 = 45
-
-# Joint angles in degrees
 theta1 = 42
 theta2 = 28	
 
-# Step 1: Calculate H_01 (Base to Link 1)
 dx1 = a1 * np.cos(np.radians(theta1))
 dy1 = a1 * np.sin(np.radians(theta1))
 H_01 = create_htmatrix(theta1, dx1, dy1)
 
-# Step 2: Calculate H_12 (Link 1 to Link 2)
 dx2 = a2 * np.cos(np.radians(theta2))
 dy2 = a2 * np.sin(np.radians(theta2))
 H_12 = create_htmatrix(theta2, dx2, dy2)
 
-# Step 3: Global Transformation Matrix (Matrix Multiplication)
+
 H_02 = H_01 @ H_12
 
-# Step 4: Extract final coordinates of the pen
 pen_coords = H_02 @ np.array([0, 0, 1])
+
+print("-" * 30)
+print(f"Final Matrix (H_02):\n{H_02}")
+print("-" * 30)
+print(f"Coordinate of the pen: X = {pen_coords[0]:.2f}, Y = {pen_coords[1]:.2f}")
 ```
 
 ## 1.B. Running the Servos (Hardware Implementation)
@@ -68,13 +62,34 @@ The program operates in an interactive loop:
 
 ### MicroPython Code Implementation
 ```python
-# This script controls two Lynxmotion SES-V2 smart servos via UART.
-# Target Environment: MicroPython (Raspberry Pi Pico/Zero 2W)
+#This is an example on writing serial commands
+#to TWO Lynxmotion SES-V2 smart servos.
+#LSS-ADA board is used on connecting RPi serial
+#  RPi -- LSS-ADA
+#  GPIO14 Tx -- D1 servo Rx
+#  GPIO15 Rx -- D0 servo Tx
+#  GPIO GND -- GND
+#The Lynxmotion SES-V2 servo serial 115200, parity none, 8 bits, stop bits 1
+# Raspberry Pi Pico 2W board
+#Serial port settings
+#  Preferences, Raspberry Pi Configuration
+#    Serial Port ON
+#
+#  sudo raspi-config
+#   Interface Options
+#    Serial port
+#     "Would you like a login shell to be ..." NO
+#      "Would you like the serial port hardware.." YES
+#        Enter
+#         Esc
+#          sudo reboot
+#
+#Lynxmotion Smart Servo LSS Communication protocol: search for "Lynxmotion wiki" and
+#open the Smart Servo (LSS), LSS Communication Protocol. 
 
 from time import sleep
 from machine import UART, Pin
 
-# Initialize UART communication
 bus = UART(
     0,
     baudrate=115200,
@@ -85,47 +100,45 @@ bus = UART(
     rx=Pin(1)
 )
 
-# Servo Configuration
-servoID_A = '15' # ID for Link 1
-servoID_B = '40' # ID for Link 2
+# **********************************
+servoID_A='15' # IMPORTANT: CHANGE HERE to the number of your servo A
+servoID_B='40' # IMPORTANT: CHANGE HERE to the number of your servo B
 
-# Set initial directions and LED status
-bus.write(f'#{servoID_A}G-1\r'.encode()) # Set CCW for Servo A
-bus.write(f'#{servoID_B}G1\r'.encode())  # Set CW for Servo B
+# Also important: set gyre direction to counterclockwise (CCW) for servo A
+bus.write(f'#{servoID_A}G-1\r'.encode()) # CCW: -1
+bus.write(f'#{servoID_B}G1\r'.encode())  # CW: +1
+
+# Optional: LED colors (0: off; colors 1 to 7)
 bus.write(f'#{servoID_A}LED6\r'.encode())
 bus.write(f'#{servoID_B}LED5\r'.encode())
 
-# Define safety angle limits
-MIN_ANGLE1, MAX_ANGLE1 = 0, 180
-MIN_ANGLE2, MAX_ANGLE2 = -120, 120
+# Define angle limits. DON'T CHANGE
+MIN_ANGLE1 = 0
+MAX_ANGLE1 = 180
+MIN_ANGLE2 = -120
+MAX_ANGLE2 = 120
 
 try:
-    while True:
-        # Request user input for real-time control
-        angle1 = int(input(f'Enter angle for 1st servo ({MIN_ANGLE1} to {MAX_ANGLE1}): '))
+    while True: # you finish the program with ctrl+c
+        angle1 = int(input(f'Enter angle for 1st servo ({MIN_ANGLE1}–{MAX_ANGLE1}): '))
         if not (MIN_ANGLE1 <= angle1 <= MAX_ANGLE1):
-            raise ValueError("Angle1 out of range.")
+            raise ValueError(f'Angle1 must be between {MIN_ANGLE1} and {MAX_ANGLE1} degrees.')
 
-        angle2 = int(input(f'Enter angle for 2nd servo ({MIN_ANGLE2} to {MAX_ANGLE2}): '))
+        angle2 = int(input(f'Enter angle for 2nd servo ({MIN_ANGLE2}–{MAX_ANGLE2}): '))
         if not (MIN_ANGLE2 <= angle2 <= MAX_ANGLE2):
-            raise ValueError("Angle2 out of range.")
+            raise ValueError(f'Angle2 must be between {MIN_ANGLE2} and {MAX_ANGLE2} degrees.')
 
-        print(f'Moving servos to {angle1} and {angle2} degrees...')
-        
-        # Command format: #<ID>D<tenths of degrees>T<time in ms>
-        bus.write(f'#{servoID_A}D{angle1*10}T1500\r'.encode())
+        # Documentation: "Action Commands" in 
+        # https://wiki.lynxmotion.com/info/wiki/lynxmotion/view/ses-v2/lynxmotion-smart-servo/lss-communication-protocol
+        print(f'Moving to {angle1}, {angle2} degrees')
+        bus.write(f'#{servoID_A}D{angle1*10}T1500\r'.encode()) # D indicates degrees
         bus.write(f'#{servoID_B}D{angle2*10}T1500\r'.encode())
-        
         sleep(3)
-        
 except KeyboardInterrupt:
-    print("Finished with the servo. Closing connection.")
-    # Connection cleanup is handled by the interpreter on exit
-
-# Output Results
-print("-" * 30)
+    print("Finished with the servo. Closing serial port.")
+    bus.close()
+    del bus
 ```
 
-print(f"Final Matrix (H_02):\n{H_02}")
-print("-" * 30)
-print(f"Coordinate of the pen: X = {pen_coords[0]:.2f}, Y = {pen_coords[1]:.2f}")
+
+
