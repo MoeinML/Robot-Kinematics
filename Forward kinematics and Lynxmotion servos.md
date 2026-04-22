@@ -175,13 +175,13 @@ In this section, we verify the Forward Kinematics (FK) model by comparing the th
 For this final test, we used the specific angles from our code to compare the mathematical output with manual measurements on grid paper.
 
 * **Input Angles:** $\theta_1 = 42^\circ, \theta_2 = 28^\circ$
-* **FK Code Result:** $X \approx 68.32 \text{ mm}, Y \approx 87.89 \text{ mm}$
+* **FK Code Result:** $X \approx 67.41 \text{ mm}, Y \approx 89.13 \text{ mm}$
 * **Manual Measurement:**
     We counted the cells on the grid paper from the origin $(0,0)$:
     * **X-axis:** $13.5 \text{ cells} \times 5 \text{ mm/cell} = 67.5 \text{ mm}$
     * **Y-axis:** $17 \text{ cells} \times 5 \text{ mm/cell} = 85.0 \text{ mm}$
 
-**Conclusion:** The difference between the code results and the physical measurements is minimal (within $2-3 \text{ mm}$). This error is likely due to the physical backlash in the servo gears and slight misalignments when placing the arm on the grid paper. The experiment successfully validates our Forward Kinematics model.
+**Conclusion:** The difference between the code results and the physical measurements is minimal (within $2-4 \text{ mm}$). This error is likely due to the physical backlash in the servo gears and slight misalignments when placing the arm on the grid paper. The experiment successfully validates our Forward Kinematics model.
 
 ![Manual Verification on Grid Paper](Images/Case5.jpg)
 ![Manual Verification on Grid Paper](Images/Case5-2.jpg)
