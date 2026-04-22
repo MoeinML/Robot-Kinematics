@@ -184,6 +184,7 @@ For this final test, we used the specific angles from our code to compare the ma
 **Conclusion:** The difference between the code results and the physical measurements is minimal (within $2-3 \text{ mm}$). This error is likely due to the physical backlash in the servo gears and slight misalignments when placing the arm on the grid paper. The experiment successfully validates our Forward Kinematics model.
 
 ![Manual Verification on Grid Paper](Images/Case5.jpg)
+![Manual Verification on Grid Paper](Images/Case5-2.jpg)
 
 
 گ
