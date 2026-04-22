@@ -235,4 +235,3 @@ The estimated cost for this prototype is approximately **€160 - €210**, base
 * **Mechanical Structure & 3D Printed Parts:** ~€5 - €20
 
 ---
-گ
