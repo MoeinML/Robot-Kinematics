@@ -176,6 +176,9 @@ For this final test, we used the specific angles from our code to compare the ma
 
 * **Input Angles:** $\theta_1 = 42^\circ, \theta_2 = 28^\circ$
 * **FK Code Result:** $X \approx 67.41 \text{ mm}, Y \approx 89.13 \text{ mm}$
+
+![Manual Verification on Grid Paper](Images/Case5-1.jpg)
+
 * **Manual Measurement:**
     We counted the cells on the grid paper from the origin $(0,0)$:
     * **X-axis:** $13.5 \text{ cells} \times 5 \text{ mm/cell} = 67.5 \text{ mm}$
