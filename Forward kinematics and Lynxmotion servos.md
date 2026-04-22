@@ -189,5 +189,18 @@ For this final test, we used the specific angles from our code to compare the ma
 ![Manual Verification on Grid Paper](Images/Case5.jpg)
 ![Manual Verification on Grid Paper](Images/Case5-2.jpg)
 
+## 3. Workspace Analysis
+
+### Workspace Sketch
+The workspace of our 2-DOF robotic arm represents all the points that the end-effector (pen) can reach within its mechanical limits. 
+
+![SCARA Manipulator Workspace](image_6fab28.png)
+
+### Shape Description and Comments
+The shape of the workspace for this robotic arm is a **Circular Sector** (or a portion of an Annulus). 
+
+* **Geometry:** Since the arm consists of two revolute joints moving in a 2D plane, the reach is defined by the sum of the link lengths ($L_1 + L_2$) as the maximum radius, and the difference ($|L_1 - L_2|$) as the minimum radius. 
+* **Physical Limits:** The shape is not a full circle because the servomotors and the mechanical structure have rotation limits (e.g., cables or physical stops), which restrict the angular range. 
+* **Application:** This "fan-like" workspace is typical for SCARA manipulators, making them highly efficient for pick-and-place tasks or drawing on a flat surface within this specific curved boundary.
 
 گ
