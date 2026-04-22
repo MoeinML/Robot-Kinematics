@@ -194,7 +194,7 @@ For this final test, we used the specific angles from our code to compare the ma
 ### Workspace Sketch
 The workspace of our 2-DOF robotic arm represents all the points that the end-effector (pen) can reach within its mechanical limits. 
 
-![SCARA Manipulator Workspace](image_6fab28.png)
+![SCARA Manipulator Workspace](Images/WorkSpace.jpg)
 
 ### Shape Description and Comments
 The shape of the workspace for this robotic arm is a **Circular Sector** (or a portion of an Annulus). 
